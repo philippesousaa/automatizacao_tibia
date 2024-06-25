@@ -48,20 +48,20 @@ def get_loot():
     except Exception as e:
         print(f'Erro ao procurar loot: {e}')
 
-def go_to_flag(data):
+def go_to_flag(paths):
     try:
-        for item in data:
+        for item in paths:
             path = item['path']
             wait = item['wait']
             
-            print(f'Indo para: {path}')
+            print(f'Tentando ir para: {path}')
             flag = pg.locateOnScreen(path, confidence=0.8, region=constants.REGION_MAP)
             if flag:
                 x, y = pg.center(flag)
                 pg.moveTo(x, y)
                 pg.click()
                 pg.sleep(wait)
-                print(f'Esperando path: {path}')
+                print(f'Sucesso ao ir para: {path}')
                 return True
             else:
                 print(f'Não encontrou: {path}')
@@ -85,12 +85,21 @@ def run():
         with open(f'{constants.FOLDER_NAME}/infos.json', 'r') as file:
             data = json.load(file)
         
-        for _ in range(2): # loop two times
-            for item in data:
-                kill_monster()
-                get_loot()
-                try:
-                    go_to_flag(item['path'])
-                
-                except Exception as e:
-                    Eliminate even had ה th havePs4 even Did<|end_of_action|><|start_of_action|> Drag  had
+        for item in data:
+            kill_monster()
+            get_loot()
+            
+            try:
+                paths = [item]  # Passando o item como lista para go_to_flag
+                if not go_to_flag(paths):
+                    print(f'Não foi possível encontrar nenhum dos caminhos para o item: {item}')
+            
+            except Exception as e:
+                print(f'Erro ao executar go_to_flag para o item: {item}. Erro: {e}')
+                continue
+    
+    except Exception as e:
+        print(f'Erro durante a execução do script: {e}')
+
+# Início da execução do script
+run()
