@@ -15,22 +15,22 @@ anchor2_image = 'images/anchor_floor_2.png'
 anchor3_image = 'images/anchor_floor_3.png'
 
 
+import pyautogui as pg
+import constants
+import json
+
 def is_attacking():
     try:
-        print('atacando')
         return pg.locateOnScreen(target_image, region=constants.REGION_BATTLE, confidence=0.7)
     except Exception as e:
         print(f'Erro ao localizar a imagem is_attacking: {e}')
         return None
 
 def kill_monster():
-    print("actions.check_battle começando kill monster")
     while actions.check_battle() is None:
-        print("entrou no while")
         pg.press('space')
         while is_attacking() is not None:
-            print('esperando o bicho morrer')
-        print('procurando bicho')
+            pass  # Espera até não estar atacando
 
 def get_loot():
     try:
@@ -44,7 +44,6 @@ def get_loot():
             pg.moveTo(x, y)
             pg.click()
             pg.sleep(0.5)
-            print('Clique realizado no loot')
     except Exception as e:
         print(f'Erro ao procurar loot: {e}')
 
@@ -56,7 +55,7 @@ def go_to_flag(paths):
             
             print(f'Tentando ir para: {path}')
             while True:
-                flag = pg.locateOnScreen(path, confidence=0.8, region=constants.REGION_MAP)
+                flag = pg.locateOnScreen(path, confidence=0.7, region=constants.REGION_MAP)
                 if flag:
                     x, y = pg.center(flag)
                     pg.moveTo(x, y)
@@ -64,7 +63,7 @@ def go_to_flag(paths):
                     pg.sleep(wait)
                     print(f'Sucesso ao ir para: {path}')
                     while check_player_position() is None:
-                        pg.sleep(1)
+                        pass  # Espera até o jogador estar na posição correta
                     break  # Sai do loop interno pois chegou no path correto
                 else:
                     print(f'Não encontrou: {path}')
@@ -106,3 +105,4 @@ def run():
 
 # Início da execução do script
 run()
+
