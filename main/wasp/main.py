@@ -34,7 +34,10 @@ def kill_monster():
 
 def get_loot():
     try:
-        loot = pg.locateAllOnScreen(monster_image, confidence=0.9, region=constants.REGION_LOOT)
+        loot = list(pg.locateAllOnScreen(monster_image, confidence=0.9, region=constants.REGION_LOOT))
+        if not loot:
+            print('Sem loot encontrado.')
+            return
         for box in loot:
             x, y = pg.center(box)
             pg.moveTo(x, y)
@@ -42,7 +45,7 @@ def get_loot():
             pg.sleep(0.5)
         print('loot', loot)
     except Exception as e:
-        print(f'Sem bicho: {e}')
+        print(f'Erro ao procurar loot: {e}')
 
 def go_to_flag(paths, wait):
     try:
