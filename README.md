@@ -19,3 +19,8 @@ Este projeto é um bot para o jogo Tibia, desenvolvido em Python. O bot automati
    ```bash
    git clone https://github.com/philippesousaa/automatizacao_tibia.git
    cd automatizacao_tibia
+
+
+2. Instale as dependências:
+ ```bash
+pip install -r requirements.txt
