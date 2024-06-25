@@ -1,5 +1,3 @@
-# automatizacao_tibia
-
 # Automatização Tibia
 
 Este projeto é um bot para o jogo Tibia, desenvolvido em Python. O bot automatiza várias ações no jogo, como coleta de recursos, combate e movimentação.
