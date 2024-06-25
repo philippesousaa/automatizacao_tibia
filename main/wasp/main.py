@@ -19,6 +19,13 @@ import pyautogui as pg
 import constants
 import json
 
+import pyautogui as pg
+import constants
+import json
+import threading
+
+# Definindo constantes e importações necessárias
+
 def is_attacking():
     try:
         return pg.locateOnScreen(target_image, region=constants.REGION_BATTLE, confidence=0.7)
@@ -55,16 +62,19 @@ def go_to_flag(paths):
             
             print(f'Tentando ir para: {path}')
             while True:
-                flag = pg.locateOnScreen(path, confidence=0.7, region=constants.REGION_MAP)
+                flag = pg.locateOnScreen(path, confidence=0.8, region=constants.REGION_MAP)
                 if flag:
                     x, y = pg.center(flag)
                     pg.moveTo(x, y)
                     pg.click()
                     pg.sleep(wait)
                     print(f'Sucesso ao ir para: {path}')
-                    while check_player_position() is None:
-                        pass  # Espera até o jogador estar na posição correta
-                    break  # Sai do loop interno pois chegou no path correto
+                    # Verifica posição do jogador após o movimento
+                    player_position = check_player_position()
+                    if player_position:
+                        break  # Sai do loop interno pois chegou no path correto
+                    else:
+                        print('Jogador não está na posição correta.')
                 else:
                     print(f'Não encontrou: {path}')
         
@@ -82,13 +92,21 @@ def check_player_position():
         print(f'Erro ao verificar a posição do jogador: {e}')
         return None
 
+def attack_monsters():
+    while True:
+        kill_monster()
+        pg.sleep(1)  # Ajuste o tempo conforme necessário
+
 def run():
     try:
         with open(f'{constants.FOLDER_NAME}/infos.json', 'r') as file:
             data = json.load(file)
         
+        # Criando e iniciando a thread para atacar os monstros
+        attack_thread = threading.Thread(target=attack_monsters, daemon=True)
+        attack_thread.start()
+        
         for item in data:
-            kill_monster()
             get_loot()
             
             try:
