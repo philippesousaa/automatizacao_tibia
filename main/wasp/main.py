@@ -55,19 +55,22 @@ def go_to_flag(paths):
             wait = item['wait']
             
             print(f'Tentando ir para: {path}')
-            flag = pg.locateOnScreen(path, confidence=0.8, region=constants.REGION_MAP)
-            if flag:
-                x, y = pg.center(flag)
-                pg.moveTo(x, y)
-                pg.click()
-                pg.sleep(wait)
-                print(f'Sucesso ao ir para: {path}')
-                return True
-            else:
-                print(f'Não encontrou: {path}')
+            while True:
+                flag = pg.locateOnScreen(path, confidence=0.8, region=constants.REGION_MAP)
+                if flag:
+                    x, y = pg.center(flag)
+                    pg.moveTo(x, y)
+                    pg.click()
+                    pg.sleep(wait)
+                    print(f'Sucesso ao ir para: {path}')
+                    while check_player_position() is None:
+                        pg.sleep(1)
+                    break  # Sai do loop interno pois chegou no path correto
+                else:
+                    print(f'Não encontrou: {path}')
         
-        print('Nenhum dos caminhos foi encontrado.')
-        return False
+        print('Concluídas todas as flags.')
+        return True
     
     except Exception as e:
         print(f'Erro ao procurar a flag: {e}')
