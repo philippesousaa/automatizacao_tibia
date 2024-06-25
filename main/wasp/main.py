@@ -38,12 +38,13 @@ def get_loot():
         if not loot:
             print('Sem loot encontrado.')
             return
+        print(f'Encontrado {len(loot)} monstros')
         for box in loot:
             x, y = pg.center(box)
             pg.moveTo(x, y)
             pg.click()
             pg.sleep(0.5)
-        print('loot', loot)
+            print('Clique realizado no loot')
     except Exception as e:
         print(f'Erro ao procurar loot: {e}')
 
