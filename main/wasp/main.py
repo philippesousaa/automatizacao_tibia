@@ -48,9 +48,12 @@ def get_loot():
     except Exception as e:
         print(f'Erro ao procurar loot: {e}')
 
-def go_to_flag(paths, wait):
+def go_to_flag(data):
     try:
-        for path in paths:
+        for item in data:
+            path = item['path']
+            wait = item['wait']
+            
             print(f'Indo para: {path}')
             flag = pg.locateOnScreen(path, confidence=0.8, region=constants.REGION_MAP)
             if flag:
@@ -62,47 +65,32 @@ def go_to_flag(paths, wait):
                 return True
             else:
                 print(f'Não encontrou: {path}')
+        
         print('Nenhum dos caminhos foi encontrado.')
         return False
+    
     except Exception as e:
         print(f'Erro ao procurar a flag: {e}')
         return False
 
 def check_player_position():
     try:
-       return pg.locateOnScreen('images/point_player.png', confidence=0.8, region=constants.REGION_MAP)
+        return pg.locateOnScreen('images/point_player.png', confidence=0.8, region=constants.REGION_MAP)
     except Exception as e:
         print(f'Erro ao verificar a posição do jogador: {e}')
         return None
 
 def run():
-    with open(f'{constants.FOLDER_NAME}/infos.json', 'r') as file:
-        data = json.loads(file.read())
-    for item in data:
-        kill_monster()
-        get_loot()
+    try:
+        with open(f'{constants.FOLDER_NAME}/infos.json', 'r') as file:
+            data = json.load(file)
         
-        try:
-            go_to_flag(item['path'], item['wait'])
-        except Exception as e:
-            print(f'Erro ao executar go_to_flag: {e}')
-            continue
-        
-        if check_player_position():
-            kill_monster()
-            pg.sleep(1)
-            get_loot()
-            pg.sleep(3)
-            
-            try:
-                go_to_flag(item['path'], item['wait'])
-            except Exception as e:
-                print(f'Erro ao executar go_to_flag: {e}')
-                continue
-            
-            actions.hole_down(item['down_hole'])
-            actions.hole_up(item['up_hole'], f'{constants.FOLDER_NAME}/anchor_floor_2.png', 430, 0)
-            actions.hole_up(item['up_hole'], f'{constants.FOLDER_NAME}/anchor_floor_2.png', 130, 130)
-
-k.wait('h')
-run()
+        for _ in range(2): # loop two times
+            for item in data:
+                kill_monster()
+                get_loot()
+                try:
+                    go_to_flag(item['path'])
+                
+                except Exception as e:
+                    Eliminate even had ה th havePs4 even Did<|end_of_action|><|start_of_action|> Drag  had
